@@ -1,6 +1,6 @@
 ---
 name: next
-description: Shows only the single next concrete step to work on — never the whole board (that's "progress"). Use whenever the user asks what to do right now — phrases like "o que eu faço agora", "qual o próximo passo", "what should I do next", "what should I work on", "give me the next task", "me dá a próxima tarefa". Also triggers on explicit /next invocation. Reads tasks via TaskList, the same source "progress" uses. Do NOT use this when the user wants the full picture (every bucket, every epic) — that's "progress"; use "next" only when they want one actionable item instead of an overview. Do NOT use this when the user is telling you they finished or completed something — that's "done", which marks it and shows the next step in one motion.
+description: Shows only the single next concrete step to work on — never the whole board (that's "progress"). Use whenever the user asks what to do right now — phrases like "what do I do now", "what's the next step", "what should I do next", "what should I work on", "give me the next task", "give me the next thing to do". Also triggers on explicit /next invocation. Reads tasks via TaskList, the same source "progress" uses. Do NOT use this when the user wants the full picture (every bucket, every epic) — that's "progress"; use "next" only when they want one actionable item instead of an overview. Do NOT use this when the user is telling you they finished or completed something — that's "done", which marks it and shows the next step in one motion.
 ---
 
 # Next
@@ -11,7 +11,7 @@ Show the single next concrete step — one task, not a board. Someone asking "wh
 
 Call `TaskList`.
 
-If it returns no tasks, say so in one line — "nenhuma tarefa registrada nesta sessão ainda" — and stop. Don't suggest running `/breakdown`; the user might be checking on work that lives outside this plugin entirely, and assuming otherwise is a guess this skill doesn't need to make.
+If it returns no tasks, say so in one line — "no tasks registered in this session yet" — and stop. Don't suggest running `/breakdown`; the user might be checking on work that lives outside this plugin entirely, and assuming otherwise is a guess this skill doesn't need to make.
 
 ## Step 2: Categorize
 
@@ -40,14 +40,14 @@ Pick the todo task with the highest unlock count; tie-break by lowest ID (same r
 
 **3. Nothing in working or todo — only done and/or blocked left:**
 
-- If every task is `completed`: say so — something like "🎉 tudo concluído — nenhuma tarefa pendente." — and stop.
+- If every task is `completed`: say so — something like "🎉 all done — no tasks pending." — and stop.
 - Otherwise there's at least one blocked task and nothing free. Pick the one closest to unblocking: fewest open blockers remaining (count of its own `blockedBy` list). Tie-break by highest unlock count (using the same tally from case 2 — which blocked task, once freed, would free the most others). Final tie-break: lowest ID.
 
-  Name its blockers the same way `progress` does — IDs and subjects, not bare numbers: "esperando #4 (Conectar cliques dos botões), #5 (Suporte a teclado)".
+  Name its blockers the same way `progress` does — IDs and subjects, not bare numbers: "waiting on #4 (Wire up button clicks), #5 (Keyboard support)".
 
 ## Step 4: Present it
 
-Always name the epic the chosen task belongs to — read `metadata.epic`; if absent, call it "outras tarefas" (same convention as `progress`). Format: epic, then task ID and subject, then a one-line note depending on which case in Step 3 produced it:
+Always name the epic the chosen task belongs to — read `metadata.epic`; if absent, call it "other tasks" (same convention as `progress`). Format: epic, then task ID and subject, then a one-line note depending on which case in Step 3 produced it:
 
 - **working**: note that it's already in progress.
 - **todo**: note that it's free to start.
@@ -55,20 +55,20 @@ Always name the epic the chosen task belongs to — read `metadata.epic`; if abs
 
 **Example, working:**
 ```
-epic: calculadora-digital-web
-#1 Criar estrutura HTML da calculadora — já em andamento
+epic: digital-calculator-web
+#1 Build the calculator's HTML structure — already in progress
 ```
 
 **Example, todo:**
 ```
-epic: mudanca-apartamento
-#12 Contratar empresa de mudança — livre pra começar
+epic: apartment-move
+#12 Hire a moving company — free to start
 ```
 
 **Example, blocked fallback:**
 ```
-epic: calculadora-digital-web
-#7 Testar operações encadeadas — esperando #4 (Conectar cliques dos botões), #5 (Suporte a teclado)
+epic: digital-calculator-web
+#7 Test chained operations — waiting on #4 (Wire up button clicks), #5 (Keyboard support)
 ```
 
 ## No config, no verbosity

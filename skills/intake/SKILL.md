@@ -11,7 +11,7 @@ Turn an already-written dev task into a spec precise enough for `/breakdown` to 
 
 Check once, at the start, for `.task-breaker/config.json` in the project.
 
-- **File missing (first run in this project, whether from `/intake` or `/breakdown`):** ask once, in a single short message — (1) "quer que eu pause a cada passo pra você confirmar (padrão), ou execute direto sem parar?" and (2) "quer respostas sem explicação (padrão), com raciocínio resumido, ou com explicação completa?" — then create `.task-breaker/config.json` with `{"autoExecute": <bool>, "verbosity": <"silent"|"medium"|"full">}` based on the answers, and proceed under those settings for the rest of this run. Don't ask again in future runs; the file is the record of the answers.
+- **File missing (first run in this project, whether from `/intake` or `/breakdown`):** ask once, in a single short message — (1) "would you like me to pause at each step for your confirmation (default), or run straight through without stopping?" and (2) "would you like answers with no explanation (default), with brief reasoning, or with full explanation?" — then create `.task-breaker/config.json` with `{"autoExecute": <bool>, "verbosity": <"silent"|"medium"|"full">}` based on the answers, and proceed under those settings for the rest of this run. Don't ask again in future runs; the file is the record of the answers.
 - **File present:** just read both fields and follow them silently, no need to mention the file.
 
 If `autoExecute` is `true`, skip the "does this look right" confirmation below and go straight from the finished spec to the persistence question. Otherwise (the default) always show the finished spec and wait for a quick confirmation before asking about persistence. This confirmation step is a correctness safety net, not a tone pause — it's the only thing standing between a misread ticket and a wrong task list, so it stays even under `verbosity: "silent"`.
@@ -31,19 +31,19 @@ A dev handing over a task has usually already done the thinking — a ticket, a 
 ## Process
 
 1. **Read the task as given.** Don't ask about anything the input already covers, even implicitly.
-2. **Extract, don't invent.** For each category below, pull only what's actually present in the input — inferred from context is fine (e.g. "endpoint" implies an HTTP API), invented from nothing is not. If a category has no information to extract, write "não especificado" — never fill it with a guess dressed up as fact.
+2. **Extract, don't invent.** For each category below, pull only what's actually present in the input — inferred from context is fine (e.g. "endpoint" implies an HTTP API), invented from nothing is not. If a category has no information to extract, write "not specified" — never fill it with a guess dressed up as fact.
 3. **Categories to extract** (same shape `/breakdown` expects):
    - **Goal** — what does "done" look like, in one sentence
    - **Scope boundaries** — what's explicitly in, what's explicitly out
    - **Constraints** — stack, tooling, performance, security, anything hard-fixed the task mentions
    - **Success criteria** — how would someone know this worked
    - **Edge cases** — technical edge cases the task already implies or explicitly calls out
-4. **Check for a blocking gap.** A gap is blocking only when its absence would make `/breakdown` produce a fundamentally different task list — different order, different tasks entirely — not a missing detail that just makes the spec less polished. If genuinely blocking, ask exactly one objective question (multiple-choice when possible) — don't turn it into an interview, one answer is enough to unblock. If not blocking, mark the field "não especificado" and move on.
+4. **Check for a blocking gap.** A gap is blocking only when its absence would make `/breakdown` produce a fundamentally different task list — different order, different tasks entirely — not a missing detail that just makes the spec less polished. If genuinely blocking, ask exactly one objective question (multiple-choice when possible) — don't turn it into an interview, one answer is enough to unblock. If not blocking, mark the field "not specified" and move on.
 5. **If the input is too vague to extract at all** — the Goal itself can't be inferred, not just one field missing — this isn't a one-question fix, and forcing one would turn intake back into the interview it exists to avoid. Say plainly that the task isn't concrete enough yet and point to `brainstorming` to work it up into something extractable. Don't guess a goal just to have something to extract.
 
 ## Presenting the finished spec
 
-Once extraction is done, present it using this template, filled in — don't leave placeholders, and don't invent content to avoid writing "não especificado":
+Once extraction is done, present it using this template, filled in — don't leave placeholders, and don't invent content to avoid writing "not specified":
 
 ```
 # Spec: <title>
@@ -56,13 +56,13 @@ Once extraction is done, present it using this template, filled in — don't lea
 **Out:** <bullet list — explicitly excluded, prevents scope creep later>
 
 ## Constraints
-<bullet list, or "não especificado">
+<bullet list, or "not specified">
 
 ## Success criteria
 <bullet list — observable/checkable, not vague adjectives>
 
 ## Edge cases
-<bullet list, or "não especificado">
+<bullet list, or "not specified">
 ```
 
 Ask the user to confirm it looks right before moving on (skipped only when `autoExecute` is `true`, per the rule above). If they want changes, revise and re-present — don't silently guess.

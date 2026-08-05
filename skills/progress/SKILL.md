@@ -1,6 +1,6 @@
 ---
 name: progress
-description: Shows the current state of the native task board — what's done, what's being worked on, what's ready to start right now, and what's stuck waiting on a dependency. Use this whenever the user asks about progress, status, or how much is left — phrases like "como tá o progresso", "mostra o board", "o que já foi feito", "quantas tarefas faltam", "what's left to do", "show me the board", "what's the status". Also triggers on explicit /progress invocation. Reads the tasks created by the "breakdown" skill (or any native task in this session) via TaskList — do NOT use this to create or decompose tasks (that's "breakdown"), to organize an already-written task into a spec (that's "intake"), or when the user only wants the single next actionable step instead of the whole picture (that's "next").
+description: Shows the current state of the native task board — what's done, what's being worked on, what's ready to start right now, and what's stuck waiting on a dependency. Use this whenever the user asks about progress, status, or how much is left — phrases like "how's the progress going", "what's already done", "how many tasks are left", "what's left to do", "show me the board", "what's the status". Also triggers on explicit /progress invocation. Reads the tasks created by the "breakdown" skill (or any native task in this session) via TaskList — do NOT use this to create or decompose tasks (that's "breakdown"), to organize an already-written task into a spec (that's "intake"), or when the user only wants the single next actionable step instead of the whole picture (that's "next").
 ---
 
 # Progress
@@ -15,7 +15,7 @@ A task list only helps if it's easy to check without re-reading every task's dep
 
 Call `TaskList`.
 
-If it returns no tasks, say so in one line — something like "nenhuma tarefa registrada nesta sessão ainda" — and stop there. Don't suggest running `/breakdown`; the user might be checking on work that lives outside this plugin entirely, and assuming otherwise is a guess this skill doesn't need to make.
+If it returns no tasks, say so in one line — something like "no tasks registered in this session yet" — and stop there. Don't suggest running `/breakdown`; the user might be checking on work that lives outside this plugin entirely, and assuming otherwise is a guess this skill doesn't need to make.
 
 ## Step 2: Categorize
 
@@ -28,42 +28,42 @@ For each task, decide its bucket using status first and `blockedBy` second:
 
 ## Step 3: Group by epic, but only if it's actually useful
 
-Read each task's `metadata.epic` — this is set by `/breakdown` when it created the task, as a slug derived from that decomposition's spec. Tasks with no `epic` in their metadata (created outside `/breakdown`, or before this field existed) belong to a shared group called "outras tarefas".
+Read each task's `metadata.epic` — this is set by `/breakdown` when it created the task, as a slug derived from that decomposition's spec. Tasks with no `epic` in their metadata (created outside `/breakdown`, or before this field existed) belong to a shared group called "other tasks".
 
-Count the distinct groups, including "outras tarefas" if it's non-empty. If there's exactly one, skip grouping and show a single flat board — a header for one group tells the user nothing they didn't already know. If there are two or more, show one mini-board per group, headed by the epic name, so unrelated work sitting in the same project doesn't get flattened into one confusing list.
+Count the distinct groups, including "other tasks" if it's non-empty. If there's exactly one, skip grouping and show a single flat board — a header for one group tells the user nothing they didn't already know. If there are two or more, show one mini-board per group, headed by the epic name, so unrelated work sitting in the same project doesn't get flattened into one confusing list.
 
 ## Step 4: Present the board
 
-For each group (or the single flat table if there's only one), render one markdown table ordered by task ID ascending — not grouped by bucket. This shows the real sequence of the work top to bottom instead of splitting it across four sections. Three columns: ID, Status, Tarefa.
+For each group (or the single flat table if there's only one), render one markdown table ordered by task ID ascending — not grouped by bucket. This shows the real sequence of the work top to bottom instead of splitting it across four sections. Three columns: ID, Status, Task.
 
 - **Status** is the bucket name from Step 2 (`done`, `working`, `todo`, `blocked`), prefixed with a colored circle so the bucket reads at a glance without parsing the word: ✅ `done`, 🟡 `working`, ⚪ `todo`, 🔴 `blocked`. Center this column (`:---:` in the table's alignment row) — markdown tables have no font-size control, so a centered single-glyph-plus-word is the most compact this can get without embedding raw HTML that may not render consistently everywhere this output is read.
-- **Tarefa** is the subject. For a `blocked` task, append what's blocking it in the same cell instead of a separate column — the blocking tasks' IDs and subjects, not just bare numbers, since "esperando #4 (Conectar cliques dos botões)" is something the user can act on and "esperando #4" isn't.
+- **Task** is the subject. For a `blocked` task, append what's blocking it in the same cell instead of a separate column — the blocking tasks' IDs and subjects, not just bare numbers, since "waiting on #4 (Wire up button clicks)" is something the user can act on and "waiting on #4" isn't.
 
 **Example, single group:**
 
 ```
-| ID  |  Status   | Tarefa |
+| ID  |  Status   | Task |
 |-----|:---------:|--------|
-| #1  | 🟡 working | Criar estrutura HTML da calculadora |
-| #2  | ⚪ todo    | Estilizar a calculadora em CSS |
-| #3  | ✅ done    | Implementar lógica das operações básicas em JS |
-| #7  | 🔴 blocked | Testar operações encadeadas — esperando #4 (Conectar cliques dos botões), #5 (Suporte a teclado) |
+| #1  | 🟡 working | Build the calculator's HTML structure |
+| #2  | ⚪ todo    | Style the calculator in CSS |
+| #3  | ✅ done    | Implement the basic operations logic in JS |
+| #7  | 🔴 blocked | Test chained operations — waiting on #4 (Wire up button clicks), #5 (Keyboard support) |
 ```
 
 **Example, multiple groups:**
 
 ```
-## calculadora-digital-web
-| ID  | Status  | Tarefa |
+## digital-calculator-web
+| ID  | Status  | Task |
 |-----|:-------:|--------|
-| #2  | ⚪ todo  | Estilizar a calculadora em CSS |
-| #3  | ✅ done  | Implementar lógica das operações básicas em JS |
+| #2  | ⚪ todo  | Style the calculator in CSS |
+| #3  | ✅ done  | Implement the basic operations logic in JS |
 
-## mudanca-apartamento
-| ID  |  Status   | Tarefa |
+## apartment-move
+| ID  |  Status   | Task |
 |-----|:---------:|--------|
-| #12 | 🟡 working | Contratar empresa de mudança |
-| #15 | 🔴 blocked | Montar cozinha — esperando #12 (Contratar empresa de mudança) |
+| #12 | 🟡 working | Hire a moving company |
+| #15 | 🔴 blocked | Set up the kitchen — waiting on #12 (Hire a moving company) |
 ```
 
 ## No config, no verbosity

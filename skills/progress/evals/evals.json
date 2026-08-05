@@ -4,53 +4,53 @@
     {
       "id": 1,
       "eval_name": "eval-single-epic-board",
-      "prompt": "(contexto: existem 4 tarefas nativas nesta sessão, todas com metadata.epic = \"calculadora-digital-web\": #A completed, #B in_progress, #C pending sem blockedBy, #D pending com blockedBy=[#B])\n\nmostra o progresso",
-      "expected_output": "Uma única tabela markdown (sem cabeçalho de grupo/epic, já que só existe 1 grupo), colunas ID/Status/Tarefa, coluna Status centralizada, linhas em ordem ascendente por ID (#A, #B, #C, #D). Status de cada linha bate com o bucket certo, prefixado pelo emoji de cor certo (✅ done, 🟡 working, ⚪ todo, 🔴 blocked). A célula Tarefa de #D cita #B pelo ID e pelo subject, não só o número.",
+      "prompt": "(context: there are 4 native tasks in this session, all with metadata.epic = \"digital-calculator-web\": #A completed, #B in_progress, #C pending with no blockedBy, #D pending with blockedBy=[#B])\n\nshow me the progress",
+      "expected_output": "A single markdown table (no group/epic header, since there's only 1 group), columns ID/Status/Task, centered Status column, rows in ascending ID order (#A, #B, #C, #D). Each row's status matches the right bucket, prefixed by the right color emoji (✅ done, 🟡 working, ⚪ todo, 🔴 blocked). #D's Task cell names #B by ID and subject, not just the number.",
       "files": [],
       "assertions": [
-        "Não mostra cabeçalho de grupo/epic, já que só existe 1 grupo",
-        "Uma única tabela markdown com colunas ID, Status, Tarefa, coluna Status centralizada",
-        "Linhas em ordem ascendente por ID: #A, #B, #C, #D",
-        "Status de cada linha bate com o bucket correto e o emoji certo: #A ✅ done, #B 🟡 working, #C ⚪ todo, #D 🔴 blocked",
-        "A célula Tarefa de #D cita #B pelo ID e pelo subject, não só \"esperando #B\""
+        "Does not show a group/epic header, since there's only 1 group",
+        "A single markdown table with columns ID, Status, Task, centered Status column",
+        "Rows in ascending ID order: #A, #B, #C, #D",
+        "Each row's status matches the correct bucket and emoji: #A ✅ done, #B 🟡 working, #C ⚪ todo, #D 🔴 blocked",
+        "#D's Task cell names #B by ID and subject, not just \"waiting on #B\""
       ]
     },
     {
       "id": 2,
       "eval_name": "eval-multi-epic-board-with-empty-buckets",
-      "prompt": "(contexto: existem 5 tarefas nativas. Epic \"calculadora-digital-web\": #E completed, #F pending sem blockedBy. Epic \"mudanca-apartamento\": #G in_progress, #H pending com blockedBy=[#G]. Sem epic: #I pending sem blockedBy.)\n\nmostra o board",
-      "expected_output": "3 tabelas com cabeçalho de grupo: calculadora-digital-web (#E ✅ done, #F ⚪ todo, em ordem de ID), mudanca-apartamento (#G 🟡 working, #H 🔴 blocked, em ordem de ID), outras tarefas (#I ⚪ todo). Cada grupo é uma tabela markdown com colunas ID/Status/Tarefa, coluna Status centralizada. A célula Tarefa de #H cita #G pelo ID e pelo subject.",
+      "prompt": "(context: there are 5 native tasks. Epic \"digital-calculator-web\": #E completed, #F pending with no blockedBy. Epic \"apartment-move\": #G in_progress, #H pending with blockedBy=[#G]. No epic: #I pending with no blockedBy.)\n\nshow me the board",
+      "expected_output": "3 tables with a group header: digital-calculator-web (#E ✅ done, #F ⚪ todo, in ID order), apartment-move (#G 🟡 working, #H 🔴 blocked, in ID order), other tasks (#I ⚪ todo). Each group is a markdown table with columns ID/Status/Task, centered Status column. #H's Task cell names #G by ID and subject.",
       "files": [],
       "assertions": [
-        "Mostra 3 grupos com cabeçalho: calculadora-digital-web, mudanca-apartamento, outras tarefas",
-        "Cada grupo é uma tabela markdown com colunas ID, Status, Tarefa, coluna Status centralizada, ordenada por ID ascendente",
-        "Grupo calculadora-digital-web mostra #E (✅ done) e #F (⚪ todo), nessa ordem",
-        "Grupo mudanca-apartamento mostra #G (🟡 working) e #H (🔴 blocked), nessa ordem",
-        "#I aparece no grupo outras tarefas com status ⚪ todo",
-        "A célula Tarefa de #H cita #G pelo ID e pelo subject"
+        "Shows 3 groups with a header: digital-calculator-web, apartment-move, other tasks",
+        "Each group is a markdown table with columns ID, Status, Task, centered Status column, ordered by ascending ID",
+        "digital-calculator-web group shows #E (✅ done) and #F (⚪ todo), in that order",
+        "apartment-move group shows #G (🟡 working) and #H (🔴 blocked), in that order",
+        "#I appears in the other tasks group with status ⚪ todo",
+        "#H's Task cell names #G by ID and subject"
       ]
     },
     {
       "id": 3,
       "eval_name": "eval-in-progress-overrides-blocked",
-      "prompt": "(contexto: existe uma tarefa #J com status in_progress e blockedBy=[#K], onde #K é uma tarefa pending sem blockedBy)\n\nmostra o progresso",
-      "expected_output": "#J aparece na tabela com status 🟡 working, não blocked, porque status manda sobre blockedBy. #K aparece com status ⚪ todo.",
+      "prompt": "(context: there's a task #J with status in_progress and blockedBy=[#K], where #K is a pending task with no blockedBy)\n\nshow me the progress",
+      "expected_output": "#J appears in the table with status 🟡 working, not blocked, because status overrides blockedBy. #K appears with status ⚪ todo.",
       "files": [],
       "assertions": [
-        "#J aparece com status 🟡 working na tabela, não blocked, apesar de ter blockedBy não-vazio",
-        "#K aparece com status ⚪ todo"
+        "#J appears with status 🟡 working in the table, not blocked, despite having a non-empty blockedBy",
+        "#K appears with status ⚪ todo"
       ]
     },
     {
       "id": 4,
       "eval_name": "eval-empty-board",
-      "prompt": "(contexto: TaskList não retorna nenhuma tarefa)\n\n/progress",
-      "expected_output": "Uma linha só afirmando que não há tarefas registradas. Não sugere rodar /breakdown. Não mostra uma tabela (nem vazia, só com cabeçalho de colunas).",
+      "prompt": "(context: TaskList returns no tasks)\n\n/progress",
+      "expected_output": "A single line stating there are no tasks registered. Does not suggest running /breakdown. Does not show a table (not even an empty one with just a column header).",
       "files": [],
       "assertions": [
-        "Resposta é uma única linha afirmando a ausência de tarefas",
-        "Não sugere rodar /breakdown",
-        "Não imprime uma tabela markdown vazia (cabeçalho de colunas sem nenhuma linha)"
+        "Response is a single line stating the absence of tasks",
+        "Does not suggest running /breakdown",
+        "Does not print an empty markdown table (column header with no rows)"
       ]
     }
   ]
