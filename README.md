@@ -27,8 +27,8 @@ Open a new Claude Code session afterward — skills only become invokable at the
 ## Example workflow
 
 ```
-/intake TICKET-142: adicionar paginação cursor-based no endpoint GET /users,
-máximo de 50 itens por página, retornar next_cursor quando houver mais páginas
+/intake TICKET-142: add cursor-based pagination to GET /users,
+max 50 items per page, return next_cursor when more pages remain
 ```
 
 `/intake` extracts a spec (Goal / Scope / Constraints / Success criteria / Edge cases) from the ticket text — no interview, since everything needed is already there.
