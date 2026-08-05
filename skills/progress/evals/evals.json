@@ -1,0 +1,57 @@
+{
+  "skill_name": "progress",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "eval-single-epic-board",
+      "prompt": "(contexto: existem 4 tarefas nativas nesta sessão, todas com metadata.epic = \"calculadora-digital-web\": #A completed, #B in_progress, #C pending sem blockedBy, #D pending com blockedBy=[#B])\n\nmostra o progresso",
+      "expected_output": "Uma única tabela markdown (sem cabeçalho de grupo/epic, já que só existe 1 grupo), colunas ID/Status/Tarefa, coluna Status centralizada, linhas em ordem ascendente por ID (#A, #B, #C, #D). Status de cada linha bate com o bucket certo, prefixado pelo emoji de cor certo (✅ done, 🟡 working, ⚪ todo, 🔴 blocked). A célula Tarefa de #D cita #B pelo ID e pelo subject, não só o número.",
+      "files": [],
+      "assertions": [
+        "Não mostra cabeçalho de grupo/epic, já que só existe 1 grupo",
+        "Uma única tabela markdown com colunas ID, Status, Tarefa, coluna Status centralizada",
+        "Linhas em ordem ascendente por ID: #A, #B, #C, #D",
+        "Status de cada linha bate com o bucket correto e o emoji certo: #A ✅ done, #B 🟡 working, #C ⚪ todo, #D 🔴 blocked",
+        "A célula Tarefa de #D cita #B pelo ID e pelo subject, não só \"esperando #B\""
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "eval-multi-epic-board-with-empty-buckets",
+      "prompt": "(contexto: existem 5 tarefas nativas. Epic \"calculadora-digital-web\": #E completed, #F pending sem blockedBy. Epic \"mudanca-apartamento\": #G in_progress, #H pending com blockedBy=[#G]. Sem epic: #I pending sem blockedBy.)\n\nmostra o board",
+      "expected_output": "3 tabelas com cabeçalho de grupo: calculadora-digital-web (#E ✅ done, #F ⚪ todo, em ordem de ID), mudanca-apartamento (#G 🟡 working, #H 🔴 blocked, em ordem de ID), outras tarefas (#I ⚪ todo). Cada grupo é uma tabela markdown com colunas ID/Status/Tarefa, coluna Status centralizada. A célula Tarefa de #H cita #G pelo ID e pelo subject.",
+      "files": [],
+      "assertions": [
+        "Mostra 3 grupos com cabeçalho: calculadora-digital-web, mudanca-apartamento, outras tarefas",
+        "Cada grupo é uma tabela markdown com colunas ID, Status, Tarefa, coluna Status centralizada, ordenada por ID ascendente",
+        "Grupo calculadora-digital-web mostra #E (✅ done) e #F (⚪ todo), nessa ordem",
+        "Grupo mudanca-apartamento mostra #G (🟡 working) e #H (🔴 blocked), nessa ordem",
+        "#I aparece no grupo outras tarefas com status ⚪ todo",
+        "A célula Tarefa de #H cita #G pelo ID e pelo subject"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "eval-in-progress-overrides-blocked",
+      "prompt": "(contexto: existe uma tarefa #J com status in_progress e blockedBy=[#K], onde #K é uma tarefa pending sem blockedBy)\n\nmostra o progresso",
+      "expected_output": "#J aparece na tabela com status 🟡 working, não blocked, porque status manda sobre blockedBy. #K aparece com status ⚪ todo.",
+      "files": [],
+      "assertions": [
+        "#J aparece com status 🟡 working na tabela, não blocked, apesar de ter blockedBy não-vazio",
+        "#K aparece com status ⚪ todo"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "eval-empty-board",
+      "prompt": "(contexto: TaskList não retorna nenhuma tarefa)\n\n/progress",
+      "expected_output": "Uma linha só afirmando que não há tarefas registradas. Não sugere rodar /breakdown. Não mostra uma tabela (nem vazia, só com cabeçalho de colunas).",
+      "files": [],
+      "assertions": [
+        "Resposta é uma única linha afirmando a ausência de tarefas",
+        "Não sugere rodar /breakdown",
+        "Não imprime uma tabela markdown vazia (cabeçalho de colunas sem nenhuma linha)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "skill_name": "breakdown",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "eval-complete-software-spec",
+      "prompt": "Here's the confirmed spec, ready to break down:\n\n# Spec: Calculadora Digital Web\n\n## Goal\nUma calculadora web simples, com visual inspirado na calculadora padrão do iOS, que executa operações aritméticas básicas e funções auxiliares (porcentagem, raiz quadrada), rodando localmente no navegador.\n\n## Scope\n**In:**\n- Operações básicas: soma, subtração, multiplicação, divisão\n- Porcentagem e raiz quadrada\n- Entrada via clique nos botões e via teclado físico\n- Interface visual inspirada na calculadora padrão do iOS\n- Roda localmente no navegador, sem necessidade de deploy\n\n**Out:**\n- Funções científicas avançadas\n- App mobile ou desktop nativo\n- Publicação/hospedagem em produção\n- Histórico de operações, funções de memória\n\n## Constraints\n- HTML/CSS/JS puro, sem framework\n- Deve funcionar abrindo o arquivo localmente no navegador\n\n## Success criteria\n- As 4 operações básicas retornam o resultado correto\n- Porcentagem e raiz quadrada funcionam corretamente\n- Clique nos botões e teclado físico produzem o mesmo resultado\n- Dividir por zero mostra mensagem de erro\n- Operações encadeadas aplicadas na ordem digitada\n\n## Edge cases\n- Divisão por zero → exibir mensagem de erro\n- Encadeamento de operações sem apertar \"=\"\n\nquero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Recognizes the spec is complete, skips the /intake suggestion entirely, decomposes into ordered tasks with explicit dependencies, creates them via TaskCreate then wires dependencies via TaskUpdate (not passing addBlockedBy to TaskCreate directly), checks TaskList first for duplicates, then asks the persistence question once with the tightened MCP rule.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "eval_name": "eval-vague-idea",
+      "prompt": "quero fazer um app de lista de tarefas, roda /breakdown nisso",
+      "expected_output": "Detects that this is too vague to decompose responsibly (no goal depth, no scope boundaries, no constraints, nothing concrete to extract) and suggests running brainstorming first — not /intake, since there's no written task yet for /intake to organize — without refusing outright and without silently inventing scope decisions. If it offers to proceed anyway, it states assumptions explicitly and gets confirmation before creating any tasks via TaskCreate.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "eval_name": "eval-complete-nonsoftware-spec",
+      "prompt": "Here's the confirmed spec, ready to break down:\n\n# Spec: Mudança de apartamento (mesma cidade)\n\n## Goal\nConcluir a mudança do apartamento atual (2 quartos) para o novo apartamento, na mesma cidade, com saída no dia 28 e entrada no dia 1 do mês seguinte, dentro do orçamento de R$3.000, sem danos aos itens transportados, e com cozinha e quarto principal montados e funcionais já no dia 1.\n\n## Scope\n**In:**\n- Contratação de empresa de mudança para embalagem e transporte\n- Proteção reforçada para itens frágeis (TV grande, quadros)\n- Cuidado especial com o gato no dia da mudança\n- Transferência do serviço de internet para o novo endereço\n- Atualização de endereço em bancos e documentos\n- Montagem funcional da cozinha e do quarto principal até o dia 1\n\n**Out:**\n- Reforma ou obra no novo apartamento\n- Doação ou descarte de móveis antigos\n- Montagem dos demais cômodos além de cozinha e quarto principal\n\n## Constraints\n- Mesma cidade\n- Saída dia 28, entrada dia 1 (3 dias de sobreposição)\n- Orçamento total: R$3.000\n- Execução via empresa de mudança contratada\n\n## Success criteria\n- Itens chegam sem danos até o dia 1\n- Gasto dentro do limite de R$3.000\n- Internet ativa no novo endereço até o dia 1\n- Endereço atualizado em bancos/documentos até o dia 1\n- Cozinha e quarto principal montados e utilizáveis no dia 1\n- Gato transportado com segurança\n\n## Edge cases\n- TV grande e quadros frágeis exigem embalagem reforçada e seguro\n- Gato precisa de caixa de transporte e ambiente contido\n- Sobreposição de 3 dias entre saída e entrada\n\nquero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Recognizes the spec is complete even though it's not software, skips the /intake suggestion, decomposes into ordered tasks with explicit dependencies without forcing artificial software-style phases, checks TaskList first, creates via TaskCreate then TaskUpdate for dependencies, asks the persistence question once.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "eval_name": "eval-verbosity-silent",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": true, \"verbosity\": \"silent\"})\n\nHere's the confirmed spec, ready to break down:\n\n# Spec: Calculadora Digital Web\n\n## Goal\nUma calculadora web simples, com visual inspirado na calculadora padrão do iOS, que executa operações aritméticas básicas e funções auxiliares (porcentagem, raiz quadrada), rodando localmente no navegador.\n\n## Scope\n**In:**\n- Operações básicas: soma, subtração, multiplicação, divisão\n- Porcentagem e raiz quadrada\n- Entrada via clique nos botões e via teclado físico\n- Interface visual inspirada na calculadora padrão do iOS\n- Roda localmente no navegador, sem necessidade de deploy\n\n**Out:**\n- Funções científicas avançadas\n- App mobile ou desktop nativo\n- Publicação/hospedagem em produção\n- Histórico de operações, funções de memória\n\n## Constraints\n- HTML/CSS/JS puro, sem framework\n- Deve funcionar abrindo o arquivo localmente no navegador\n\n## Success criteria\n- As 4 operações básicas retornam o resultado correto\n- Porcentagem e raiz quadrada funcionam corretamente\n- Clique nos botões e teclado físico produzem o mesmo resultado\n- Dividir por zero mostra mensagem de erro\n- Operações encadeadas aplicadas na ordem digitada\n\n## Edge cases\n- Divisão por zero → exibir mensagem de erro\n- Encadeamento de operações sem apertar \"=\"\n\nquero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Treats the config as already present (no setup question). Decomposes into ordered tasks with explicit dependencies with zero surrounding narration — no reasoning sentences about why a task depends on another or why the spec counted as complete. Task list itself is the deliverable.",
+      "files": [],
+      "assertions": [
+        "Did not ask the setup question (autoExecute/verbosity) since config.json already exists",
+        "No sentence of reasoning or explanation appears anywhere outside the task list itself",
+        "Creates tasks via TaskCreate then wires dependencies via TaskUpdate, and asks the persistence question once"
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "eval-verbosity-medium",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": true, \"verbosity\": \"medium\"})\n\nHere's the confirmed spec, ready to break down:\n\n# Spec: Calculadora Digital Web\n\n## Goal\nUma calculadora web simples, com visual inspirado na calculadora padrão do iOS, que executa operações aritméticas básicas e funções auxiliares (porcentagem, raiz quadrada), rodando localmente no navegador.\n\n## Scope\n**In:**\n- Operações básicas: soma, subtração, multiplicação, divisão\n- Porcentagem e raiz quadrada\n- Entrada via clique nos botões e via teclado físico\n- Interface visual inspirada na calculadora padrão do iOS\n- Roda localmente no navegador, sem necessidade de deploy\n\n**Out:**\n- Funções científicas avançadas\n- App mobile ou desktop nativo\n- Publicação/hospedagem em produção\n- Histórico de operações, funções de memória\n\n## Constraints\n- HTML/CSS/JS puro, sem framework\n- Deve funcionar abrindo o arquivo localmente no navegador\n\n## Success criteria\n- As 4 operações básicas retornam o resultado correto\n- Porcentagem e raiz quadrada funcionam corretamente\n- Clique nos botões e teclado físico produzem o mesmo resultado\n- Dividir por zero mostra mensagem de erro\n- Operações encadeadas aplicadas na ordem digitada\n\n## Edge cases\n- Divisão por zero → exibir mensagem de erro\n- Encadeamento de operações sem apertar \"=\"\n\nquero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Treats the config as already present (no setup question). Decomposes into ordered tasks with explicit dependencies; may include at most one short reasoning sentence where genuinely non-obvious (e.g. why two tasks are parallel vs sequential). Not a full narration.",
+      "files": [],
+      "assertions": [
+        "Did not ask the setup question (autoExecute/verbosity) since config.json already exists",
+        "At most one short reasoning sentence appears, and only where genuinely non-obvious — not a running narration",
+        "Creates tasks via TaskCreate then wires dependencies via TaskUpdate, and asks the persistence question once"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "eval-verbosity-full",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": true, \"verbosity\": \"full\"})\n\nHere's the confirmed spec, ready to break down:\n\n# Spec: Calculadora Digital Web\n\n## Goal\nUma calculadora web simples, com visual inspirado na calculadora padrão do iOS, que executa operações aritméticas básicas e funções auxiliares (porcentagem, raiz quadrada), rodando localmente no navegador.\n\n## Scope\n**In:**\n- Operações básicas: soma, subtração, multiplicação, divisão\n- Porcentagem e raiz quadrada\n- Entrada via clique nos botões e via teclado físico\n- Interface visual inspirada na calculadora padrão do iOS\n- Roda localmente no navegador, sem necessidade de deploy\n\n**Out:**\n- Funções científicas avançadas\n- App mobile ou desktop nativo\n- Publicação/hospedagem em produção\n- Histórico de operações, funções de memória\n\n## Constraints\n- HTML/CSS/JS puro, sem framework\n- Deve funcionar abrindo o arquivo localmente no navegador\n\n## Success criteria\n- As 4 operações básicas retornam o resultado correto\n- Porcentagem e raiz quadrada funcionam corretamente\n- Clique nos botões e teclado físico produzem o mesmo resultado\n- Dividir por zero mostra mensagem de erro\n- Operações encadeadas aplicadas na ordem digitada\n\n## Edge cases\n- Divisão por zero → exibir mensagem de erro\n- Encadeamento de operações sem apertar \"=\"\n\nquero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Treats the config as already present (no setup question). Narrates reasoning as it goes — why a task depends on another, why the spec counted as complete, how the decomposition was ordered — while the task list itself remains the deliverable, not a narration of it.",
+      "files": [],
+      "assertions": [
+        "Did not ask the setup question (autoExecute/verbosity) since config.json already exists",
+        "Reasoning is narrated for at least one non-obvious decomposition decision (a dependency or ordering choice)",
+        "Creates tasks via TaskCreate then wires dependencies via TaskUpdate, and asks the persistence question once"
+      ]
+    },
+    {
+      "id": 7,
+      "eval_name": "eval-jira-ticket-with-code-context",
+      "prompt": "Ticket JIRA-482: Adicionar validação de CPF no formulário de cadastro de usuário\n\nDescrição: O formulário de cadastro (src/features/user/RegisterForm.tsx) aceita qualquer string no campo CPF sem validar formato nem dígito verificador. Precisamos validar no client-side antes de enviar pro backend, e mostrar erro inline no campo quando inválido.\n\nContexto do código (RegisterForm.tsx, trecho relevante):\n```tsx\nconst [cpf, setCpf] = useState('');\n// ...\n<input value={cpf} onChange={e => setCpf(e.target.value)} name=\"cpf\" />\n```\n\nJá existe um util em src/utils/validators.ts com outras validações (email, telefone), mas nada de CPF ainda.\n\nquero quebrar isso em tarefas por commit, roda /breakdown",
+      "expected_output": "Reconhece que a spec já está completa e ancorada em código real (arquivo, estado atual, padrão de validators.ts a seguir) — não sugere /intake. Decompõe em tarefas do tamanho de um commit (ex: função de validação de CPF em validators.ts seguindo o padrão existente → integrar a validação no estado/handler do RegisterForm → exibir erro inline no campo → tratar edge case de CPF formatado vs sem formatação), com dependências entre elas refletindo que tarefas depois se apoiam nas de antes. Cria via TaskCreate com metadata.epic derivado do goal do ticket, depois TaskUpdate pras dependências, e pergunta persistência uma vez.",
+      "files": [],
+      "assertions": [
+        "Não sugere rodar /intake, já que o ticket já tem goal, contexto de código e comportamento esperado claros",
+        "Tarefas são do tamanho de um commit (ex: função de validação isolada, depois integração no form, depois UI de erro), não uma única tarefa genérica tipo 'implementar validação de CPF'",
+        "Ao menos uma tarefa referencia o padrão existente em validators.ts em vez de inventar uma abordagem nova do zero",
+        "Dependências entre tarefas refletem que a integração no form depende da função de validação existir primeiro",
+        "Cria as tarefas via TaskCreate com metadata.epic, depois liga dependências via TaskUpdate, e pergunta persistência uma vez"
+      ]
+    },
+    {
+      "id": 8,
+      "eval_name": "eval-vague-idea-autoexecute",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": true, \"verbosity\": \"silent\"})\n\nquero fazer um app de lista de tarefas, roda /breakdown nisso",
+      "expected_output": "Even with autoExecute=true, does not silently guess and create tasks. Detects the input is too vague to decompose responsibly, states its best-guess assumptions explicitly, and gets at least a quick go-ahead confirmation from the user before creating anything via TaskCreate — autoExecute only skips the Step 2 'does this look right' pause for a complete input, never this assumption-confirmation safety check.",
+      "files": [],
+      "assertions": [
+        "Did not call TaskCreate before getting some form of user confirmation on its stated assumptions",
+        "States assumptions explicitly rather than silently inventing scope",
+        "Does not treat autoExecute=true as license to skip this confirmation"
+      ]
+    },
+    {
+      "id": 9,
+      "eval_name": "eval-vague-title-distillation",
+      "prompt": "então eu queria montar uma coisa pra rastrear meus gastos mensais, tipo quanto eu gasto em cada categoria (mercado, transporte, lazer). já sei que quero um app simples só pra mim mesmo usar, sem cadastro de outras pessoas, lançando os gastos manualmente toda semana e vendo um resumo por categoria no fim do mês. quero quebrar isso em tarefas, roda /breakdown",
+      "expected_output": "Reconhece que a ideia já tem goal, escopo e comportamento esperado suficientes (não sugere /intake), apesar de não vir num spec formal com Title. Ao gerar o slug do epic, distila um título curto do núcleo da ideia (gastos mensais por categoria) em vez de cortar cru os primeiros ~50 caracteres do texto, que começa com enchimento ('então eu queria montar uma coisa pra'). Decompõe em tarefas, cria via TaskCreate com metadata.epic, liga dependências via TaskUpdate, pergunta persistência uma vez.",
+      "files": [],
+      "assertions": [
+        "Não sugere rodar /intake, já que a ideia tem goal, escopo e comportamento esperado claros o suficiente",
+        "O slug do epic reflete o núcleo da ideia (gastos/categoria/mensal), não um corte cru do enchimento inicial da frase ('entao-eu-queria-montar-uma-coisa-pra...')",
+        "Cria as tarefas via TaskCreate com metadata.epic, depois liga dependências via TaskUpdate, e pergunta persistência uma vez"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "skill_name": "next",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "working-vence-todo",
+      "prompt": "(contexto: existem 2 tarefas nativas, epic auth-service. #1 pending sem blockedBy (Criar endpoint de reembolso). #2 in_progress (Implementar validação de webhook do Stripe).)\n\n/next",
+      "expected_output": "Escolhe #2 (working), não #1 (todo), mesmo #1 tendo ID menor. Cita o epic auth-service e indica que já está em andamento.",
+      "files": [],
+      "assertions": [
+        "Escolhe #2, não #1, apesar de #1 ter ID menor",
+        "Indica que #2 já está em andamento",
+        "Cita o epic auth-service"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "unlock-count-decide-entre-todos",
+      "prompt": "(contexto: existem 4 tarefas nativas, epic auth-service. #3 pending sem blockedBy (Adicionar índice de email único, não desbloqueia nada). #4 pending sem blockedBy (Criar schema de usuários no Postgres, desbloqueia #5 e #6). #5 pending com blockedBy=[#4]. #6 pending com blockedBy=[#4].)\n\n/next",
+      "expected_output": "Escolhe #4 (desbloqueia 2 tarefas), não #3 (desbloqueia 0), apesar de #3 ter ID menor. Cita o epic auth-service e indica que está livre pra começar.",
+      "files": [],
+      "assertions": [
+        "Escolhe #4, não #3, apesar de #3 ter ID menor",
+        "Indica que #4 está livre pra começar",
+        "Cita o epic auth-service"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "fallback-mais-perto-de-destravar",
+      "prompt": "(contexto: existem 5 tarefas nativas, epic dashboard-frontend, nenhuma livre nem working. #7 completed. #8 pending com blockedBy=[#10]. #9 pending com blockedBy=[#10,#11]. #10 pending com blockedBy=[#11]. #11 pending com blockedBy=[#10] — ciclo mínimo entre #10/#11 só pra saturar o board em blocked.)\n\n/next",
+      "expected_output": "#8, #10 e #11 empatam em 1 bloqueio aberto restante; o desempate por quantas tarefas cada um libera (tally reverso a partir do blockedBy de todo o bucket blocked) escolhe #10 (libera 3: #8, #9 e #11), não #8 (libera 0) nem #11 (libera 2). Nomeia #11 como bloqueio, citando ID e subject.",
+      "files": [],
+      "assertions": [
+        "Escolhe #10, não #8 nem #11, apesar dos três terem 1 bloqueio aberto cada",
+        "Nomeia #11 como o bloqueio de #10, citando ID e subject (não só o número)",
+        "Cita o epic dashboard-frontend"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "multi-epic-cruzando-dev-nao-dev",
+      "prompt": "(contexto: existem 3 tarefas nativas. #12 in_progress, epic auth-service (Implementar refresh token no login). #13 e #14 pending sem blockedBy, epic cronograma-mudanca.)\n\n/next",
+      "expected_output": "Escolhe #12 (working vence globalmente, cruzando epics diferentes), não #13 nem #14. Cita o epic auth-service, não cronograma-mudanca.",
+      "files": [],
+      "assertions": [
+        "Escolhe #12, ignorando #13 e #14 mesmo estando livres",
+        "Cita o epic auth-service, não cronograma-mudanca"
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "estado-vazio",
+      "prompt": "(contexto: TaskList não retorna nenhuma tarefa)\n\n/next",
+      "expected_output": "Uma linha só afirmando que não há tarefas registradas. Não sugere rodar /breakdown.",
+      "files": [],
+      "assertions": [
+        "Resposta é uma única linha afirmando a ausência de tarefas",
+        "Não sugere rodar /breakdown"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "estado-tudo-completo",
+      "prompt": "(contexto: existem 2 tarefas nativas, epic cronograma-mudanca, ambas completed: #15 Empacotar louça da cozinha, #16 Avisar síndico da data da mudança)\n\n/next",
+      "expected_output": "Mensagem afirmando que tudo está concluído, sem listar tarefas individualmente.",
+      "files": [],
+      "assertions": [
+        "Mensagem indica que todas as tarefas estão concluídas",
+        "Não lista as tarefas individualmente nem mostra um board"
+      ]
+    }
+  ]
+}

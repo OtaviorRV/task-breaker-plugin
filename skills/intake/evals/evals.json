@@ -1,0 +1,78 @@
+{
+  "skill_name": "intake",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "eval-clean-ticket-no-gap",
+      "prompt": "TICKET-142: adicionar paginação cursor-based no endpoint GET /users, máximo de 50 itens por página, retornar next_cursor no response quando houver mais páginas",
+      "expected_output": "Extracts directly into the spec template with no clarifying questions (no blocking gap in this ticket). Shows the spec and asks a terse confirmation before moving on, then asks a single persistence question.",
+      "files": [],
+      "assertions": [
+        "Did not ask any clarifying question before showing the spec",
+        "Final output follows the spec template (Goal / Scope / Constraints / Success criteria / Edge cases)",
+        "Asked a terse confirmation (e.g. \"bate com o que você imaginava?\") before moving on",
+        "Asked a single persistence question at the end instead of silently saving anything"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "eval-blocking-gap-one-question",
+      "prompt": "implementar sistema de notificações pros usuários quando um pedido for atualizado",
+      "expected_output": "Recognizes the notification channel (email/push/SMS/in-app) is missing and would fundamentally change the decomposition. Asks exactly one objective question (multiple-choice preferred) to resolve it, then produces the final spec.",
+      "files": [],
+      "assertions": [
+        "Asked exactly one clarifying question, not a multi-question interview",
+        "The question addressed something that would change the decomposition (e.g. notification channel), not a cosmetic detail",
+        "After the answer, produced a final spec following the template"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "eval-nonblocking-gap-not-specified",
+      "prompt": "adicionar endpoint de logout que invalida o token JWT atual",
+      "expected_output": "Extracts what's explicit and does not ask about missing polish details (e.g. exact HTTP status code, rate limiting) that wouldn't change the decomposition. Marks the missing field as \"não especificado\" instead of inventing content.",
+      "files": [],
+      "assertions": [
+        "Did not ask any clarifying question",
+        "At least one spec field is marked \"não especificado\" rather than filled with invented content",
+        "Final output follows the spec template"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "eval-too-vague-suggests-brainstorming",
+      "prompt": "quero melhorar o sistema de notificações",
+      "expected_output": "Recognizes the goal itself is unclear, not just one field missing — doesn't force a one-question fix or produce a spec with a guessed goal. States plainly the task isn't concrete enough and points to running brainstorming instead.",
+      "files": [],
+      "assertions": [
+        "Did not produce a spec by guessing the goal",
+        "Did not ask a series of interview-style questions",
+        "Explicitly suggested running the brainstorming skill"
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "eval-verbosity-silent",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": true, \"verbosity\": \"silent\"})\n\nTICKET-99: adicionar endpoint de upload de avatar, salvo em S3, limite de 5MB",
+      "expected_output": "Does not ask the setup question since config.json already exists. No blocking gap in this ticket. autoExecute is true, so the terse confirmation is skipped — goes straight from spec to the persistence question. Everything short and direct, no reasoning narrated anywhere.",
+      "files": [],
+      "assertions": [
+        "Did not ask the setup question (autoExecute/verbosity) since config.json already exists",
+        "Skipped the \"does this look right\" confirmation because autoExecute is true",
+        "No sentence of reasoning or explanation appears anywhere in the response"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "eval-verbosity-full-with-blocking-gap",
+      "prompt": "(contexto: já existe um .task-breaker/config.json neste projeto com {\"autoExecute\": false, \"verbosity\": \"full\"})\n\nadicionar cache no endpoint de busca de produtos",
+      "expected_output": "Recognizes the cache invalidation strategy/TTL is missing and would change the decomposition. Narrates why the gap counts as blocking, asks exactly one clarifying question, and after the answer narrates how the spec was arrived at. Shows the terse confirmation before handoff since autoExecute is false.",
+      "files": [],
+      "assertions": [
+        "Narrated reasoning for why the identified gap is blocking before asking about it",
+        "Asked exactly one clarifying question",
+        "Showed the confirmation step before handoff since autoExecute is false"
+      ]
+    }
+  ]
+}

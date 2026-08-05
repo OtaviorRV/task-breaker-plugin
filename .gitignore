@@ -1,0 +1,5 @@
+*-workspace/
+.task-breaker/
+_Session.md
+.DS_Store
+Thumbs.db

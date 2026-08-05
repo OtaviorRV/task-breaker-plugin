@@ -1,0 +1,98 @@
+{
+  "skill_name": "done",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "no-id-marks-working-target",
+      "prompt": "(contexto: epic auth-service. #1 in_progress (Implementar validação de webhook do Stripe). #2 pending sem blockedBy (Criar endpoint de reembolso).)\n\n/done",
+      "expected_output": "Marca #1 como completed (o alvo que o /next escolheria, working vence). Mostra confirmação e em seguida o próximo passo (#2, livre pra começar).",
+      "files": [],
+      "assertions": [
+        "Chama TaskUpdate marcando #1 como completed, não #2",
+        "Depois de marcar, mostra #2 como próximo passo (livre pra começar)",
+        "Cita o epic auth-service"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "no-id-marks-todo-via-unlock-count",
+      "prompt": "(contexto: epic auth-service, nenhuma working. #3 pending sem blockedBy (Adicionar índice de email único, não desbloqueia nada). #4 pending sem blockedBy (Criar schema de usuários no Postgres, desbloqueia #5 e #6). #5 e #6 pending com blockedBy=[#4].)\n\n/done",
+      "expected_output": "Marca #4 como completed (vence por unlock-count, não #3 que tem ID menor mas desbloqueia 0). Mostra o próximo passo em seguida — provavelmente #3 (única todo livre restante) ou #5/#6 se já destravadas.",
+      "files": [],
+      "assertions": [
+        "Chama TaskUpdate marcando #4 como completed, não #3",
+        "Depois de marcar, roda a seleção do /next de novo e mostra um próximo passo coerente com o novo estado do board",
+        "Cita o epic auth-service"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "no-id-marks-blocked-fallback",
+      "prompt": "(contexto: epic dashboard-frontend, nada livre nem working. #7 completed. #8 pending blockedBy=[#10]. #9 pending blockedBy=[#10,#11]. #10 pending blockedBy=[#11]. #11 pending blockedBy=[#10] — ciclo mínimo só pra saturar o board em blocked.)\n\n/done",
+      "expected_output": "Marca #10 como completed mesmo estando blocked (é o pick de fallback do /next — mais perto de destravar, maior unlock-count no desempate). Não recusa nem pede confirmação por estar blocked. Mostra o próximo passo em seguida (o board muda bastante já que #10 tinha 3 tarefas dependendo dele).",
+      "files": [],
+      "assertions": [
+        "Marca #10 como completed mesmo ele estando no bucket blocked antes da marcação — não recusa nem pede confirmação extra por isso",
+        "Depois de marcar, mostra um próximo passo coerente com o board já sem #10 como pendência",
+        "Cita o epic dashboard-frontend"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "id-marks-out-of-order",
+      "prompt": "(contexto: epic cronograma-mudanca. #12 in_progress (Contratar empresa de mudança). #13 pending sem blockedBy (Cancelar internet do apartamento antigo).)\n\n/done 13",
+      "expected_output": "Marca #13 como completed (o ID pedido), não #12 (que é o que o /next escolheria por estar working). Mostra o próximo passo em seguida.",
+      "files": [],
+      "assertions": [
+        "Marca #13 como completed, não #12, apesar de #12 ser o pick natural do /next",
+        "Depois de marcar, mostra o próximo passo (provavelmente #12, ainda working)",
+        "Cita o epic cronograma-mudanca"
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "id-not-found",
+      "prompt": "(contexto: só existe #14 pending sem blockedBy nesta sessão)\n\n/done 999",
+      "expected_output": "Avisa que a tarefa #999 não existe. Não chama TaskUpdate em nada. Não quebra nem tenta adivinhar outra tarefa.",
+      "files": [],
+      "assertions": [
+        "Não chama TaskUpdate em nenhuma tarefa",
+        "Mensagem indica claramente que #999 não foi encontrada"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "id-already-completed",
+      "prompt": "(contexto: epic cronograma-mudanca. #15 completed (Empacotar louça da cozinha). #16 pending sem blockedBy (Avisar síndico da data da mudança).)\n\n/done 15",
+      "expected_output": "Avisa que #15 já estava concluída (não chama TaskUpdate de novo nela). Mesmo assim mostra o próximo passo em seguida (#16, livre pra começar).",
+      "files": [],
+      "assertions": [
+        "Não chama TaskUpdate em #15, já que já está completed",
+        "Mensagem indica que #15 já estava concluída, não trata como erro",
+        "Mostra #16 como próximo passo depois"
+      ]
+    },
+    {
+      "id": 7,
+      "eval_name": "marks-last-remaining-task",
+      "prompt": "(contexto: epic auth-service. #17 pending sem blockedBy é a única tarefa que sobrou, todas as outras do epic já completed.)\n\n/done",
+      "expected_output": "Marca #17 como completed. Como não sobra mais nenhuma tarefa pendente, mostra a mensagem de tudo concluído em vez de um próximo passo.",
+      "files": [],
+      "assertions": [
+        "Marca #17 como completed",
+        "Mensagem final indica que tudo está concluído, sem apontar um próximo passo inexistente"
+      ]
+    },
+    {
+      "id": 8,
+      "eval_name": "empty-board-no-id",
+      "prompt": "(contexto: TaskList não retorna nenhuma tarefa)\n\n/done",
+      "expected_output": "Avisa que não há tarefas registradas nesta sessão. Não tenta chamar TaskUpdate em nada.",
+      "files": [],
+      "assertions": [
+        "Não chama TaskUpdate",
+        "Mensagem indica ausência de tarefas registradas, igual ao /next nesse mesmo estado"
+      ]
+    }
+  ]
+}
