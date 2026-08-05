@@ -1,6 +1,7 @@
 ---
 name: breakdown
-description: Turns a specification or idea into an ordered, executable list of tasks — the kind someone could start working through immediately, one item at a time, without having to first figure out what order things go in or what depends on what. Use this whenever the user has a plan, goal, or spec (their own, or one just produced by the "intake" skill) and wants it turned into concrete steps — phrases like "quebra isso em tarefas", "break this down", "what are the steps to do this", "turn this into a task list", or right after a spec has been confirmed and the user is ready to move to execution. Also triggers on explicit /breakdown invocation. Do NOT use this for still-vague input that isn't organized yet (no clear goal, boundaries, or constraints) — that's what the intake skill is for; use breakdown once there's something concrete to decompose.
+argument-hint: "[spec or idea]"
+description: Turns a specification or idea into an ordered, executable list of tasks — the kind someone could start working through immediately, one item at a time, without having to first figure out what order things go in or what depends on what. Use this whenever the user has a plan, goal, or spec (their own, or one just produced by the "intake" skill) and wants it turned into concrete steps — phrases like "break this down", "what are the steps to do this", "turn this into a task list", or right after a spec has been confirmed and the user is ready to move to execution. Also triggers on explicit /breakdown invocation. Do NOT use this for still-vague input that isn't organized yet (no clear goal, boundaries, or constraints) — that's what the intake skill is for; use breakdown once there's something concrete to decompose.
 ---
 
 # Breakdown

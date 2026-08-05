@@ -1,5 +1,6 @@
 ---
 name: intake
+argument-hint: "[task]"
 description: Turns an already-written dev task — a ticket, a pasted spec, a bug report, a Slack message, a short technical paragraph — into a structured spec ready for /breakdown to decompose, by extracting what's already there instead of interviewing for it. Use this whenever the user hands over concrete work to build (a feature request, an endpoint, a bug fix, a technical change), even if they just paste raw ticket text or describe it in one paragraph, and even if they don't explicitly say "organize this" or use the word "intake." Also triggers on explicit /intake invocation. Do NOT use this for a vague idea still being explored ("I want to build something for X" with no concrete task yet) — there's no interview step here for that, run brainstorming or similar instead. If the input already has a clear goal, scope, and constraints, /breakdown already handles it directly via its own completeness check — /intake only adds value when the input needs organizing first.
 ---
 

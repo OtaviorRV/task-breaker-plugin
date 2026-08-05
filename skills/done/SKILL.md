@@ -1,5 +1,6 @@
 ---
 name: done
+argument-hint: "[task ID]"
 description: Marks a task as completed and immediately shows what's next — closes the loop of "show me the next step, I did it, mark it, show me the one after that." Use whenever the user says they finished, completed, or did the current or a specific task — phrases like "mark as done", "I finished this task", "I completed this", "mark this as done", "I finished this", "done with this one", "mark #20 as done". Also triggers on explicit /done invocation, with or without a task ID. Do NOT use this to mark a task as started/in_progress (that's plain conversation, not this skill) or to just look at what's next without finishing anything (that's "next").
 ---
 
