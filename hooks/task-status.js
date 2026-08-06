@@ -16,9 +16,7 @@ function readEnabled() {
 
 const enabled = readEnabled();
 
-const output = {
-  systemMessage: enabled ? "[TASK-BAR:🟢]" : "[TASK-BAR:⚫]"
-};
+const output = {};
 
 if (enabled) {
   output.hookSpecificOutput = {
