@@ -1,6 +1,6 @@
 {
   "name": "task-breaker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Turn an already-written dev task into a working task board for the current session only (the board does NOT persist once the session ends, nor across concurrent sessions) — organize it, break it into ordered tasks, execute them for real, see the whole board, get the single next step, and mark it done.",
   "author": {
     "name": "Otávio Reis Viana"
