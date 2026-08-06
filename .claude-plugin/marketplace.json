@@ -1,14 +1,14 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "task-breaker",
-  "description": "Turn an already-written dev task into a working task board for the current session only (does not persist across sessions) — intake, breakdown, progress, next, execute, done.",
+  "description": "Turn an already-written dev task into a working task board for the current session only (does not persist across sessions) — intake, breakdown, progress, next, execute, done. Toggleable exclusive mode blocks off-board prompts while on.",
   "owner": {
     "name": "Otávio Reis Viana"
   },
   "plugins": [
     {
       "name": "task-breaker",
-      "description": "Turn an already-written dev task into a working task board for the current session only (the board does NOT persist once the session ends, nor across concurrent sessions) — organize it, break it into ordered tasks, execute them for real, see the whole board, get the single next step, and mark it done.",
+      "description": "Turn an already-written dev task into a working task board for the current session only (the board does NOT persist once the session ends, nor across concurrent sessions) — organize it, break it into ordered tasks, execute them for real, see the whole board, get the single next step, and mark it done. The task-bar toggle also switches on an exclusive mode: while on, prompts inside this project that don't look board-related get blocked until turned off.",
       "source": {
         "source": "github",
         "repo": "OtaviorRV/task-breaker-plugin"
