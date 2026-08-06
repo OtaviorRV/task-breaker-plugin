@@ -5,6 +5,8 @@
   "author": {
     "name": "Otávio Reis Viana"
   },
+  "homepage": "https://github.com/OtaviorRV/task-breaker-plugin",
+  "repository": "https://github.com/OtaviorRV/task-breaker-plugin",
   "license": "MIT",
   "keywords": ["tasks", "productivity", "task-breakdown", "planning"]
 }
