@@ -25,7 +25,7 @@ Plugin skills are namespaced: the commands below are `/task-breaker:intake`, `/t
 | `/task-breaker:next` | Shows just the single next concrete step to work on. |
 | `/task-breaker:execute [id \| epic <slug>]` | Actually implements a task — `Edit`/`Write`/`Bash`, following the target project's own conventions — instead of just tracking that someone did it. Explicit-invocation only (has side effects, so it never triggers on its own). Stops for explicit confirmation before any irreversible action, and whenever something is genuinely ambiguous or a check fails. |
 | `/task-breaker:done [id]` | Marks a task complete and immediately shows what's next, in one motion. |
-| `/task-breaker:task-bar [on\|off]` | Toggles the `[TASK-BAR:🟢]`/`[TASK-BAR:⚫]` status badge shown on every prompt. With no argument, reports the current state without changing it. |
+| `/task-breaker:task-bar [on\|off]` | Toggles the `[TASK-BAR:🟢]`/`[TASK-BAR:⚪]` status badge shown on every prompt. With no argument, reports the current state without changing it. |
 
 ## Example workflow
 

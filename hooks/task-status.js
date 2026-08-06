@@ -65,13 +65,13 @@ if (enabled && isTaskBreakerProject(input.cwd)) {
     output.hookSpecificOutput = {
       hookEventName: "UserPromptSubmit",
       additionalContext:
-        "TASK-BREAKER MODO EXCLUSIVO — essa mensagem é sobre o board. Identifique a skill certa (breakdown/intake/next/progress/done) e invoque agora, sem pedir confirmação extra."
+        "TASK-BREAKER EXCLUSIVE MODE — this message is about the board. Identify the right skill (breakdown/intake/next/progress/done) and invoke it now, without asking for extra confirmation."
     };
   } else {
     output = {
       decision: "block",
       reason:
-        "task-breaker ON e essa mensagem não parece do board. Desativa (/task-breaker:task-bar off) e manda de novo, ou reformula mencionando a tarefa/board."
+        "task-breaker is ON and this message doesn't look board-related. Turn it off (/task-breaker:task-bar off) and resend, or rephrase mentioning the task/board."
     };
   }
 }
